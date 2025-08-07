@@ -123,7 +123,7 @@ def esl_snp(genome):
 # Main execution flow
 def main():
     output_rows = []
-    header = ['query', 'ESL', 'Clade', 'Coverage']
+    header = ['query', 'ESL', 'Clade', 'Coverage', 'Clonal_Complex', 'Distance']
     esl_marker = 0
 
     # Determine the source of input files
@@ -144,9 +144,10 @@ def main():
         if esl_detected:
             for j in esl_snp(query):
                 lineage, variant = j
-                output_rows.append([query, str(esl_detected), lineage, variant])
+                output_rows.append([query, str(esl_detected), lineage, variant, mapped_hcs[1].replace('Clonal_complex_of_', ''), f"{mapped_hcs[2]:.10f}"])
+
         else:
-            output_rows.append([query, str(esl_detected), '-', '-'])
+            output_rows.append([query, str(esl_detected), '-', '-', mapped_hcs[1].replace('Clonal_complex_of_', ''), f"{mapped_hcs[2]:.10f}"])
 
     # Write results to a TSV file
     with open(f'{args.prefix}.tsv', 'w') as capout:
